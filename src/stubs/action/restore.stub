@@ -1,0 +1,47 @@
+
+    /**
+     * restore
+     *
+     * @param OnceDTO $dto
+     * @param bool $getFunc = false
+     * @param bool $withTransaction = true
+     *
+     * @return array|callable|\Exception
+     */
+    public function restore(
+        OnceDTO $dto,
+        bool $getFunc = false,
+        bool $withTransaction = true
+    ): array|callable|\Exception {
+        $data = $this->{{ modelRepository }}->findByIdOrFail($dto->id, true);
+
+        $this->{{ modelRepository }}->canEdit($dto, $data);
+
+        $restoreData = function () use ($data) {
+
+            $data = $this->{{ modelService }}->restore($data, false, false);
+
+            if ($data['code'] !== 200) {
+                throw new \Exception($data['message'], $data['code']);
+            }
+
+            return $data;
+        };
+
+        if ($getFunc) {
+            return $restoreData;
+        }
+
+        if ($withTransaction) {
+            $data = $this->transactionConstructionWithFunc(
+                $restoreData,
+                'При восстановлении модели произошла ошибка!',
+                fn () => $this->successAsyncLog(LoggerSlugs::{{ MODEL }}_RESTORE_SLUG),
+                fn (string $e) => $this->errorAsyncLog(LoggerSlugs::{{ MODEL }}_RESTORE_SLUG, $e),
+            );
+        } else {
+            $data = $restoreData();
+        }
+
+        return $data;
+    }

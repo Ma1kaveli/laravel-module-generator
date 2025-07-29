@@ -1,0 +1,22 @@
+    /**
+     * store
+     *
+     * @param {{ model }}Request $request
+     *
+     * @return JsonResponse
+     */
+    public function store({{ model }}Request $request): JsonResponse
+    {
+        $dto = {{ model }}FormDTO::fromRequest($request);
+
+        try {
+            $data = $this->actions->create($dto);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+        return response()->json([
+            'data' => new {{ model }}FullResource($data),
+            'message' => 'Запись успешно сохранена!'
+        ]);
+    }

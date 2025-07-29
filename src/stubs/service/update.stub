@@ -1,0 +1,16 @@
+
+    /**
+     * Изменение модели
+     *
+     * @param {{ model }}FormDTO $dto
+     * @param {{ model }} $dta
+     *
+     * @return {{ model }}
+     */
+    public static function update({{ model }}FormDTO $dto, {{ model }} $data): {{ model }}
+    {
+        return tap($data)->update([
+            'updated_by' => $dto->user->id,
+{{ fields }}
+        ]);
+    }

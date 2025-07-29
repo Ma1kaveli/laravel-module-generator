@@ -1,0 +1,24 @@
+
+    /**
+     * Восстановление модели
+     *
+     * @param {{ model }} $data
+     * @param bool $withTransaction = true
+     * @param bool $writeErrorLog = true
+     *
+     * @return array
+     */
+    public static function restore(
+        {{ model }} $data,
+        bool $withTransaction = true,
+        bool $writeErrorLog = true
+    ): array {
+        return $data->restoreModel(
+            $data,
+            'Модель не находится в корзине!',
+            'Модель восстановлена из корзины!',
+            'При восстановление модели произошла ошибка!',
+            $withTransaction,
+            $writeErrorLog
+        );
+    }

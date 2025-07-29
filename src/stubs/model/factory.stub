@@ -1,0 +1,10 @@
+
+    /**
+     * Меняем фабрику, за место той, которую ищут по умолчанию
+     *
+     * @return mixed
+     */
+    protected static function newFactory()
+    {
+        return {{ model }}Factory::new(); // Указываем фабрику
+    }

@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Modules\{{ module }}\DTO;
+
+use App\Modules\{{ module }}\Requests\{{ model }}CreateRequest;
+use App\Modules\{{ module }}\Requests\{{ model }}UpdateRequest;
+
+use Crudler\DTO\FormDTO;
+use Illuminate\Contracts\Auth\Authenticatable;
+
+class {{ class }} extends FormDTO {
+    public function __construct(
+{{ fieldsInit }}
+        Authenticatable $user,
+        int $organizationId,
+        bool $userIsBase,
+        ?int $id = null,
+    ) {
+        parent::__construct($user, $organizationId, $userIsBase, $id);
+    }
+
+    /**
+     * Стандартное формирование DTO из request
+     *
+     * @param {{ model }}CreateRequest|{{ model }}UpdateRequest $request
+     * @param ?int $id
+     *
+     * @return {{ class }}
+     */
+    public static function fromRequest({{ model }}CreateRequest|{{ model }}UpdateRequest $request, ?int $id = null): {{ class }}
+    {
+        $baseData = self::processBaseData(
+            $request,
+            $id,
+            [
+                {{ fields }}
+            ]
+        );
+
+        return new static(
+{{ fieldsReturn }}
+            user: $baseData['user'],
+            organizationId: $baseData['organization_id'],
+            userIsBase: $baseData['user_is_base'],
+            id: $baseData['id'],
+        );
+    }
+}

@@ -1,0 +1,16 @@
+
+    /**
+     * show
+     *
+     * @param OnceDTO $dto
+     *
+     * @return {{ model }}|\Exception
+     */
+    public function show(OnceDTO $dto): {{ model }}|\Exception
+    {
+        $data = $this->{{ modelRepository }}->showOnceById($dto);
+
+        $this->{{ modelRepository }}->canView($dto, $data);
+
+        return $data;
+    }

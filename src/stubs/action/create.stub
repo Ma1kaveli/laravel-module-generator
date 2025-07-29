@@ -1,0 +1,40 @@
+
+    /**
+     * create
+     *
+     * @param {{ model }}FormDTO $dto
+     * @param bool $getFunc = false
+     * @param bool $withTransaction = true
+     *
+     * @return {{ model }}|callable|\Exception
+     */
+    public function create(
+        {{ model }}FormDTO $dto,
+        bool $getFunc = false,
+        bool $withTransaction = true
+    ): {{ model }}|callable|\Exception {
+        $this->{{ modelRepository }}->isLocalUnique($dto);
+
+        $createData = function () use ($dto) {
+            $data = $this->{{ modelService }}->create($dto);
+
+            return $data;
+        };
+
+        if ($getFunc) {
+            return $createData;
+        }
+
+        if ($withTransaction) {
+            $data = $this->transactionConstructionWithFunc(
+                $createData,
+                'При добавление модели произошла ошибка!',
+                fn () => $this->successAsyncLog(LoggerSlugs::{{ MODEL }}_STORE_SLUG),
+                fn (string $e) => $this->errorAsyncLog(LoggerSlugs::{{ MODEL }}_STORE_SLUG, $e),
+            );
+        } else {
+            $data = $createData();
+        }
+
+        return $data;
+    }

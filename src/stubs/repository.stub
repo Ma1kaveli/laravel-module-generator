@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Modules\{{ module }}\Repositories;
+
+use App\Modules\Base\Constants\System;
+use App\Modules\Base\DTO\OnceDTO;
+use App\Modules\{{ module }}\Models\{{ model }};
+use App\Modules\{{ module }}\DTO\{{ model }}FormDTO;
+use App\Modules\{{ module }}\DTO\{{ model }}ListDTO;
+
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder as EloquentQueryBuilder;
+use Illuminate\Support\Facades\DB;
+use QueryBuilder\Repositories\BaseRepository;
+
+class {{ class }} extends BaseRepository
+{
+
+    public function __construct()
+    {
+        parent::__construct(new {{ model }}());
+    }
+
+    /**
+     * Получаем запись по идентификатору
+     *
+     * @param mixed $id
+     *
+     * @return EloquentQueryBuilder
+     */
+    public function showOnceById($id)
+    {
+        try {
+            $data = $this->model->with([])->findOrFail($id);
+        } catch(\Exception $e) {
+            throw new \Exception('Не найдено!', 404);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Может ли пользователь обновить запись
+     *
+     * @param {{ model }}FormDTO|OnceDTO $dto
+     * @param {{ model }} $data - Запись которую мы хотим обновить
+     *
+     * @return bool|\Exception
+     */
+    public function canEdit({{ model }}FormDTO|OnceDTO $dto, {{ model }} $data): bool|\Exception
+    {
+        $haveNotPermission = fn () => throw new \Exception('Нету доступа!', 403);
+
+        if ($dto->user->is_superadministrator) {
+            return true;
+        }
+
+        $authRole = $dto->user->role;
+
+        return true;
+    }
+
+    /**
+     * Проверка, может ли пользователь просматривать данные о запрашиваемой модели
+     *
+     * @param OnceDTO $dto
+     * @param {{ model }}|EloquentQueryBuilder $usdataer
+     *
+     * @return \Exception|bool
+     */
+    public function canView(
+        OnceDTO $dto,
+        {{ model }}|EloquentQueryBuilder $data,
+    ): \Exception|bool {
+        $error = fn () => throw new \Exception('Нету доступа!', 403);
+
+        if ($dto->user->is_superadministrator) {
+            return true;
+        }
+
+        $authRole = $dto->user->role;
+
+        return true;
+    }
+
+    /**
+     * Проверяем, если модель есть, то ошибка
+     *
+     * @param {{ model }}FormDTO $dto
+     *
+     * @return bool|\Exception
+     */
+    public function isLocalUnique({{ model }}FormDTO $dto): bool|\Exception
+    {
+        $mapParams = [
+            '' => '',
+            '' => [
+                'column' => DB::raw('LOWER()'),
+                'modifier' => fn($v) => trim(strtolower($v)),
+                'is_or_where' => true
+            ]
+        ];
+
+        return $this->isUnique(
+            $dto,
+            $mapParams,
+            true,
+            'Запись с такими данными уже существует!'
+        );
+    }
+}

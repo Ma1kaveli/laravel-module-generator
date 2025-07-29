@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Modules\{{ module }}\DTO;
+
+use Illuminate\Http\Request;
+use QueryBuilder\DTO\ListDTO;
+
+class {{ class }} {
+    public function __construct(
+        public readonly array $params,
+    ) {}
+
+    /**
+     * @param Request $request
+     *
+     * @return {{ class }}
+     */
+    public static function fromRequest(Request $request): {{ class }} {
+        $dto = ListDTO::fromRequest($request, [{{ fields }}]);
+
+        return new self(
+            params: [
+                ...$dto->params,
+            ],
+        );
+    }
+}

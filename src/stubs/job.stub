@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Modules\{{ module }}\Jobs;
+
+use App\Modules\Base\DTO\OnceDTO;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
+use Logger\Facades\LaravelLog;
+
+class {{ class }} implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * @var Authenticatable
+     */
+    protected Authenticatable $user;
+
+    /**
+     * Количество секунд, в течение которых задание может выполняться до истечения тайм-аута.
+     *
+     * @var int
+     */
+    public $timeout = 36000;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct(Authenticatable $user)
+    {
+        $this->user = $user;
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        LaravelLog::critical('{{ class }}: Job FAILED with error: ' . $exception->getMessage());
+        // Send notification to admin, etc.
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        Auth::setUser($this->user);
+        LaravelLog::info('{{ class }}: Starting job...');
+        try {
+            LaravelLog::info('{{ class }}: Job completed successfully.');
+        } catch (\Exception $e) {
+            LaravelLog::error('{{ class }}: Job failed with error: ' . $e->getMessage());
+            throw $e; // Важно пробросить исключение, чтобы задача была помечена как неудачная.
+        }
+    }
+}

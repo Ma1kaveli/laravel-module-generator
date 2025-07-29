@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Modules\{{ module }}\Filters;
+
+use Illuminate\Pagination\LengthAwarePaginator;
+use QueryBuilder\BaseQueryBuilder;
+
+class {{ name }} extends BaseQueryBuilder
+{
+    /**
+     * Дефолтный фильтр для списка
+     *
+     * @return LengthAwarePaginator
+     */
+    public function list(): LengthAwarePaginator
+    {
+        $this->with([]);
+        $this->applyLike(['name'], 'search');
+
+        $this->applyWithDeleted();
+
+        $this->sortBy(['name'], 'created_at');
+
+        return $this->applyPaginate();
+    }
+}

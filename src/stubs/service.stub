@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Modules\{{ module }}\Services;
+
+use App\Modules\{{ module }}\DTO\{{ model }}FormDTO;
+use App\Modules\{{ module }}\Models\{{ model }};
+
+class {{ class }} {
+    {{ methods }}
+}

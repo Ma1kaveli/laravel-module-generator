@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Modules\{{ module }}\Actions;
+
+use App\Modules\Base\DTO\OnceDTO;
+use App\Modules\{{ module }}\DTO\{{ model }}FormDTO;
+use App\Modules\{{ module }}\Models\{{ model }};
+use App\Modules\{{ module }}\Repositories\{{ model }}Repository;
+use App\Modules\{{ module }}\Services\{{ model }}Service;
+use App\Modules\Log\Constants\LoggerSlugs;
+
+use Crudler\Traits\DBTransaction;
+use Logger\Facades\LaravelLog;
+use Logger\Traits\AsyncLogger;
+
+class {{ class }} {
+    use DBTransaction, AsyncLogger;
+
+    public {{ model }}Repository ${{ modelRepository }};
+
+    public {{ model }}Service ${{ modelService }};
+
+    public function __construct() {
+        $this->{{ modelService }} = new {{ model }}Service();
+
+        $this->{{ modelRepository }} = new {{ model }}Repository();
+    }
+    {{ methods }}
+}

@@ -1,0 +1,7 @@
+<?php
+
+namespace App\Modules\{{ module }}\Constants;
+
+class {{ name }} {
+    
+}

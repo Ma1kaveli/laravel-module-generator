@@ -1,0 +1,10 @@
+
+    /**
+     * {{ relationName }}
+     *
+     * @return BelongsTo
+     */
+    public function {{ relationName }}(): BelongsTo
+    {
+        return $this->belongsTo({{ relationModel }}::class, '{{ relationKey }}', 'id');
+    }

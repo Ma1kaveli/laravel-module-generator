@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ imports }}
+
+class {{ class }} extends {{ baseClass }}
+{
+    {{ traits }}
+
+    protected $table = '{{ table }}';
+
+    protected $fillable = [
+        // Add your fillable fields here
+    ];
+    {{ filter }}
+    {{ factory }}
+    {{ hasManyMethods }}
+    {{ belongsToMethods }}
+    {{ hasOneMethods }}
+    {{ belongsToManyMethods }}
+}

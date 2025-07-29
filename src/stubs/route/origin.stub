@@ -1,0 +1,21 @@
+Route::get('/', '{{ model }}Controller@index')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_VIEW_NAME)}");
+
+Route::get('/{id}', '{{ model }}Controller@show')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_VIEW_NAME)}")
+    ->whereNumber('id');
+
+Route::post('/', '{{ model }}Controller@store')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_CREATE_NAME)}");
+
+Route::put('/{id}', '{{ model }}Controller@update')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_UPDATE_NAME)}")
+    ->whereNumber('id');
+
+Route::delete('/delete/{id}', '{{ model }}Controller@destroy')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_DELETE_NAME)}")
+    ->whereNumber('id');
+
+Route::put('/restore/{id}', '{{ model }}Controller@restore')
+    ->middleware("permission:{$permission(PermissionSlugs::{{ MODEL }}_RESTORE_NAME)}")
+    ->whereNumber('id');

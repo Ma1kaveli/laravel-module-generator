@@ -1,0 +1,47 @@
+
+    /**
+     * delete
+     *
+     * @param OnceDTO $dto
+     * @param bool $getFunc = false
+     * @param bool $withTransaction = true
+     *
+     * @return array|callable|\Exception
+     */
+    public function delete(
+        OnceDTO $dto,
+        bool $getFunc = false,
+        bool $withTransaction = true
+    ): array|callable|\Exception {
+        $data = $this->{{ modelRepository }}->findByIdOrFail($dto->id, true);
+
+        $this->{{ modelRepository }}->canEdit($dto, $data);
+
+        $deleteData = function () use ($data) {
+
+            $data = $this->{{ modelService }}->destroy($data, false, false);
+
+            if ($data['code'] !== 200) {
+                throw new \Exception($data['message'], $data['code']);
+            }
+
+            return $data;
+        };
+
+        if ($getFunc) {
+            return $deleteData;
+        }
+
+        if ($withTransaction) {
+            $data = $this->transactionConstructionWithFunc(
+                $deleteData,
+                'При удаление модели произошла ошибка!',
+                fn () => $this->successAsyncLog(LoggerSlugs::{{ MODEL }}_DESTROY_SLUG),
+                fn (string $e) => $this->errorAsyncLog(LoggerSlugs::{{ MODEL }}_DESTROY_SLUG, $e),
+            );
+        } else {
+            $data = $deleteData();
+        }
+
+        return $data;
+    }

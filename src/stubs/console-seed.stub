@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Modules\{{ module }}\Console\Commands;
+
+{{ imports }}
+
+use Exception;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+
+class {{ class }} extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'seed:{{ command }}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Команда для запуска сида для загрузки';
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        try {
+            DB::beginTransaction();
+            $this->info('Загрузка...');
+            $this->call({{ seeder }}::class);
+            $this->info('Успешно!');
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+        return 1;
+    }
+}

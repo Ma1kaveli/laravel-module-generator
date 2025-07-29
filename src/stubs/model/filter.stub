@@ -1,0 +1,10 @@
+
+    /**
+     * Устанавливаем класс фильтрации, теперь мы можем использовать методы фильтрации, как
+     *      $this->model->filter($dto->params)->list();
+     *
+     * @return string
+     */
+    public static function getFilterClass(): string {
+        return {{ model }}Filters::class;
+    }

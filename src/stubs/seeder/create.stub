@@ -1,0 +1,12 @@
+
+    /**
+     * store
+     *
+     * @param  mixed $data
+     * @return void
+     */
+    protected function store($data) {
+        {{ model }}::create([
+{{ fields }}
+        ]);
+    }

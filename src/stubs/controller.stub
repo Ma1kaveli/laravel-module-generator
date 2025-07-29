@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ imports }}
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+class {{ class }} extends Controller
+{
+    protected {{ model }}Repository $repository;
+    protected {{ model }}Actions $actions;
+
+    public function __construct()
+    {
+        $this->repository = new {{ model }}Repository();
+        $this->actions = new {{ model }}Actions();
+    }
+
+    {{ methods }}
+}

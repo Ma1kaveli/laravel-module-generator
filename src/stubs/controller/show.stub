@@ -1,0 +1,19 @@
+    /**
+     * show
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
+    {
+        $dto = OnceDTO::default($id);
+
+        try {
+            $data = $this->actions->show($dto);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+        return response()->json(['data' => new {{ model }}Resource($data)]);
+    }

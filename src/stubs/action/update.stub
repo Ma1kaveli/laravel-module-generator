@@ -1,0 +1,42 @@
+
+    /**
+     * update
+     *
+     * @param {{ model }}FormDTO $dto
+     * @param bool $getFunc = false
+     * @param bool $withTransaction = true
+     *
+     * @return {{ model }}|callable|\Exception
+     */
+    public function update(
+        {{ model }}FormDTO $dto,
+        bool $getFunc = false,
+        bool $withTransaction = true
+    ): {{ model }}|callable|\Exception {
+        $data = $this->{{ modelRepository }}->findByIdOrFail($dto->id, true);
+
+        $this->{{ modelRepository }}->canEit($dto, $data);
+
+        $updateData = function () use ($dto, $data) {
+            $data = $this->{{ modelService }}->update($dto, $data);
+
+            return $data;
+        };
+
+        if ($getFunc) {
+            return $updateData;
+        }
+
+        if ($withTransaction) {
+            $data = $this->transactionConstructionWithFunc(
+                $updateData,
+                'При обновлении модели произошла ошибка!',
+                fn () => $this->successAsyncLog(LoggerSlugs::{{ MODEL }}_UPDATE_SLUG),
+                fn (string $e) => $this->errorAsyncLog(LoggerSlugs::{{ MODEL }}_UPDATE_SLUG, $e),
+            );
+        } else {
+            $data = $updateData();
+        }
+
+        return $data;
+    }

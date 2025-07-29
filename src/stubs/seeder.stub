@@ -1,0 +1,19 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ imports }}
+
+use Illuminate\Database\Seeder;
+
+class {{ seederName }} extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        {{ action }}
+    }
+    {{ methods }}
+}

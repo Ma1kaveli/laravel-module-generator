@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Modules\{{ module }}\Rules;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+
+class {{ name }} implements ValidationRule
+{
+    public function {{ funcName }}(mixed $v) {
+        return true;
+    }
+
+    // Should return true or false depending on whether the attribute value is valid or not.
+    public function validate(string $attribute, mixed $value, \Closure $fail): void
+    {
+        $errorMessage = '';
+
+        if (!$this->{{ funcName }}($value)) {
+            $fail($errorMessage);
+        }
+    }
+
+    public static function create(): self
+    {
+        return new self();
+    }
+}

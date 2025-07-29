@@ -1,0 +1,26 @@
+{
+    "name": "makaveli/laravel-login-history",
+    "description": "Advanced Module Generator for Laravel",
+    "keywords": ["laravel", "framework"],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.10|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Makaveli\\ModuleGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [],
+            "providers": [
+                "Makaveli\\ModuleGenerator\\Providers\\ModuleGeneratorServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -1,0 +1,23 @@
+/**
+ * update
+ *
+ * @param {{ model }}Request $request
+ * @param int $id
+ *
+ * @return JsonResponse
+ */
+public function update({{ model }}Request $request, int $id): JsonResponse
+{
+    $dto = {{ model }}FormDTO::fromRequest($request, $id);
+
+    try {
+        $data = $this->actions->update($dto);
+    } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], $e->getCode());
+    }
+
+    return response()->json([
+        'data' => new {{ model }}FullResource($data),
+        'message' => 'Запись успешно обновлена!'
+    ]);
+}

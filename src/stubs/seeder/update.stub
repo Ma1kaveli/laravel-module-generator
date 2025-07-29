@@ -1,0 +1,13 @@
+
+    /**
+     * update
+     *
+     * @param {{ model }} $data
+     * @param  mixed $newData
+     *
+     * @return void
+     */
+    protected function update({{ model }} $data, $newData) {
+{{ fields }}
+        $data->save();
+    }

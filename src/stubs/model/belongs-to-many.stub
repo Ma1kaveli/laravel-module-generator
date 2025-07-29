@@ -1,0 +1,15 @@
+
+    /**
+     * {{ relationName }}
+     *
+     * @return BelongsToMany
+     */
+    public function {{ relationName }}(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            {{ relationModel }}::class,
+            {{ pivotModel }}::class,
+            '{{ foreignPivotKey }}',
+            '{{ relatedPivotKey }}',
+        );
+    }

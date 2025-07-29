@@ -1,0 +1,10 @@
+
+    /**
+     * {{ relationName }}
+     *
+     * @return HasMany
+     */
+    public function {{ relationName }}(): HasMany
+    {
+        return $this->hasMany({{ relationModel }}::class, '{{ relationKey }}', 'id');
+    }

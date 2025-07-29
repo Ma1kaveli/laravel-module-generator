@@ -1,0 +1,10 @@
+
+    /**
+     * {{ relationName }}
+     *
+     * @return HasOne
+     */
+    public function {{ relationName }}(): HasOne
+    {
+        return $this->hasOne({{ relationModel }}::class, '{{ relationKey }}', 'id');
+    }

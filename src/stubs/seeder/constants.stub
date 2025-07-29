@@ -1,0 +1,6 @@
+foreach ({{ model }}Constants::LIST as $el) {
+            $data = {{ model }}::where('slug', $el['slug'])->first();
+
+            if (empty($data)) $this->store($el);
+            else $this->update($data, $el);
+        }

@@ -1,0 +1,15 @@
+/**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $dto = ListDTO::fromRequest($request);
+        $data = $this->repository->getPaginatedList($dto);
+
+        return response()->json([
+            'data' => new PaginatedCollection(
+                $data,
+                {{ model }}Resource::collection($data)
+            )
+        ]);
+    }

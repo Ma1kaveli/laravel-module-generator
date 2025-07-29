@@ -1,0 +1,14 @@
+    /**
+     * Добавление модели
+     *
+     * @param {{ model }}FormDTO $dto
+     *
+     * @return {{ model }}
+     */
+    public static function create({{ model }}FormDTO $dto): {{ model }}
+    {
+        return {{ model }}::create([
+            'created_by' => $dto->user->id,
+{{ fields }}
+        ]);
+    }

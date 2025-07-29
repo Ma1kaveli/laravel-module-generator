@@ -1,0 +1,19 @@
+    /**
+     * restore
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $dto = OnceDTO::default($id);
+
+        try {
+            $data = $this->actions->restore($dto);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+        return response()->json(['message' => $data['message']], $data['code']);
+    }
