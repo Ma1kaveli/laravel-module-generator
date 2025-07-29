@@ -23,7 +23,7 @@ use Makaveli\ModuleGenerator\Console\Commands\CLoadModuleSeeder;
 use Makaveli\ModuleGenerator\Console\Commands\CLoadModuleService;
 use Makaveli\ModuleGenerator\Console\Commands\CLoadModuleTrait;
 
-class ModuleServiceProvider extends ServiceProvider
+class ModuleGeneratorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
