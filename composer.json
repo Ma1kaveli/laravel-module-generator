@@ -1,5 +1,5 @@
 {
-    "name": "makaveli/laravel-login-history",
+    "name": "makaveli/laravel-module-generator",
     "description": "Advanced Module Generator for Laravel",
     "keywords": ["laravel", "framework"],
     "type": "library",
