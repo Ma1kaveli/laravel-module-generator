@@ -63,7 +63,7 @@ class CLoadModule extends Command
                 'command' => 'module:action',
                 'enabled' => $this->option('a'),
                 'withModel' => true,
-                'name' => "{$model}Action",
+                'name' => "{$model}Actions",
                 'options' => [
                     'oS' => 'oS',
                     'oC' => 'oC',

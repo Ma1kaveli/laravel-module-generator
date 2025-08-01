@@ -1,11 +1,11 @@
     /**
      * store
      *
-     * @param {{ model }}Request $request
+     * @param {{ model }}CreateRequest $request
      *
      * @return JsonResponse
      */
-    public function store({{ model }}Request $request): JsonResponse
+    public function store({{ model }}CreateRequest $request): JsonResponse
     {
         $dto = {{ model }}FormDTO::fromRequest($request);
 
@@ -16,7 +16,7 @@
         }
 
         return response()->json([
-            'data' => new {{ model }}FullResource($data),
+            'data' => new {{ model }}Resource($data),
             'message' => 'Запись успешно сохранена!'
         ]);
     }

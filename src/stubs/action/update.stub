@@ -15,7 +15,7 @@
     ): {{ model }}|callable|\Exception {
         $data = $this->{{ modelRepository }}->findByIdOrFail($dto->id, true);
 
-        $this->{{ modelRepository }}->canEit($dto, $data);
+        $this->{{ modelRepository }}->canEdit($dto, $data);
 
         $updateData = function () use ($dto, $data) {
             $data = $this->{{ modelService }}->update($dto, $data);

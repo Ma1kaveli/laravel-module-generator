@@ -64,31 +64,48 @@ class CLoadModuleController extends GeneratorCommand
         $stub = parent::buildClass($name);
 
         $module = $this->argument('module');
+        $model = str_replace('Controller', '', $this->argument('name'));
 
         $imports = [
             "use App\Http\Controllers\Controller;",
-            "use App\\Modules\\{$module}\\Repositories\\{$module}Repository;",
-            "use App\\Modules\\{$module}\\Resources\\{$module}Resource;",
-            "use App\\Modules\\{$module}\\Resources\\{$module}FullResource;",
-            "use App\\Modules\\{$module}\\Actions\\{$module}Actions;",
-            "use App\Modules\Base\DTO\OnceDTO;\n",
-            "use QueryBuilder\Resources\PaginatedCollection;",
-            "use QueryBuilder\DTO\ListDTO;"
+            "use App\\Modules\\{$module}\\Repositories\\{$model}Repository;",
+            "use App\\Modules\\{$module}\\Resources\\{$model}Resource;",
+            "use App\\Modules\\{$module}\\Actions\\{$model}Actions;",
         ];
 
         $methods = [];
         if ($this->option('oL')) $methods[] = $this->buildMethodStub('index');
         if ($this->option('oS')) $methods[] = $this->buildMethodStub('show');
-        if ($this->option('oC')) $methods[] = $this->buildMethodStub('store');
-        if ($this->option('oU')) $methods[] = $this->buildMethodStub('update');
+
+        if ($this->option('oC')) {
+            $methods[] = $this->buildMethodStub('store');
+            $imports[] = "use App\\Modules\\{$module}\\Requests\\{$model}CreateRequest;";
+        }
+
+        if ($this->option('oU')) {
+            $methods[] = $this->buildMethodStub('update');
+            $imports[] = "use App\\Modules\\{$module}\\Requests\\{$model}UpdateRequest;";
+        }
+
+        if ($this->option('oC') || $this->option('oU')) {
+            $imports[] = "use App\\Modules\\{$module}\\DTO\\{$model}FormDTO;";
+        }
+
         if ($this->option('oD')) $methods[] = $this->buildMethodStub('destroy');
         if ($this->option('oR')) $methods[] = $this->buildMethodStub('restore');
+
+        array_push(
+            $imports,
+            "use App\Modules\Base\DTO\OnceDTO;\n",
+            "use QueryBuilder\Resources\PaginatedCollection;",
+            "use QueryBuilder\DTO\ListDTO;"
+        );
 
         $replace = [
             '{{ imports }}' => implode("\n", $imports),
             '{{ methods }}' => implode("\n\n", $methods),
             '{{ module }}' => $this->argument('module'),
-            '{{ model }}' => str_replace('Controller', '', $this->argument('name')),
+            '{{ model }}' => $model,
         ];
 
         return str_replace(
